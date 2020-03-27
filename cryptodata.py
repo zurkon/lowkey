@@ -30,7 +30,7 @@ def encrypt_service(service, secret):
     for item in service:
         encrypted_service.append(encrypt_data(item, cipher))
     return {
-        "name": bytes_to_string(encrypted_service[0]),
+        "service": bytes_to_string(encrypted_service[0]),
         "email": bytes_to_string(encrypted_service[1]),
         "password": bytes_to_string(encrypted_service[2]),
         "key": bytes_to_string(secret),
@@ -44,7 +44,7 @@ def decrypt_service(encrypted_service):
         service_to_decrypt.append(string_to_bytes(encrypted_service[item]))
     cipher = Salsa20.new(key=service_to_decrypt[3], nonce=service_to_decrypt[4])
     return {
-        "name": decrypt_data(service_to_decrypt[0], cipher),
+        "service": decrypt_data(service_to_decrypt[0], cipher),
         "email": decrypt_data(service_to_decrypt[1], cipher),
         "password": decrypt_data(service_to_decrypt[2], cipher),
     }
@@ -73,7 +73,7 @@ with open("data.json") as json_file:
     data_to_open = json.load(json_file)
 
 for p in data_to_open:
-    print("Name: " + p["name"])
+    print("service: " + p["service"])
     print("email: " + p["email"])
     print("senha: " + p["password"])
     print("key: " + p["key"])
