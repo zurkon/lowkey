@@ -11,6 +11,9 @@ import platform
 import cryptodata
 import json
 
+# Copy service info to  user's clipboard
+import pyperclip
+
 # Modules for Better CLI Display
 from pyfiglet import figlet_format
 from termcolor import colored
@@ -119,6 +122,40 @@ def askServiceInformation():
     print(colored(status, "green"))
     input("Press any key to Continue...")
 
+# Ask User to select a service and copy service info to clipboard
+def selectService():
+    services_data = []
+    service_options = []
+    with open("data.json") as json_file:
+        encrypted_services_data = json.load(json_file)
+
+    for item in encrypted_services_data:
+        services_data.append(cryptodata.decrypt_service(item))
+
+    for service in services_data:
+        service_options.append(service["service"])
+
+    questions = [
+        {
+            "type": "list",
+            "name": "service",
+            "message": "Select a Service:",
+            "choices": service_options
+        }
+    ]
+
+    # prompt returns a Dict with user's answers
+    choice = prompt(questions, style=style)
+    
+    # After user select a service, find that service's info...
+    for service in services_data:
+        if service["service"].lower() == choice["service"].lower():
+            # And pass it to clipboard
+            pyperclip.copy(service["password"])
+            print( colored(f"\nService Password copied to the Clipboard...\n", "green") )
+
+    input("Press any key to Continue...")
+
 
 # Encrypt and Save service data
 def saveServiceData(service):
@@ -164,7 +201,9 @@ while not exiting:
     command = getCommand()
 
     # command choices: 'Get a Service', 'Sign a Service', 'Exit'
-    if command == "Sign a Service":
+    if command == "Get a Service":
+        selectService()
+    elif command == "Sign a Service":
         askServiceInformation()
     elif command == "Exit":
         exiting = getUserConfirm()
