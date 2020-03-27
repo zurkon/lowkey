@@ -1,4 +1,3 @@
-import json
 from base64 import b64encode
 from base64 import b64decode
 from Crypto.Cipher import Salsa20
@@ -28,7 +27,7 @@ def encrypt_service(service, secret):
     cipher = Salsa20.new(key=secret)
     encrypted_service = []
     for item in service:
-        encrypted_service.append(encrypt_data(item, cipher))
+        encrypted_service.append(encrypt_data(service[item], cipher))
     return {
         "service": bytes_to_string(encrypted_service[0]),
         "email": bytes_to_string(encrypted_service[1]),
@@ -49,42 +48,50 @@ def decrypt_service(encrypted_service):
         "password": decrypt_data(service_to_decrypt[2], cipher),
     }
 
+def generateSecret():
+    return get_random_bytes(32)
+
 
 # ===============================================================================
 # ++++++++++++++++++++++++++++++++  BEGINNING  ++++++++++++++++++++++++++++++++++
 # ===============================================================================
 
-service = ["gmail", "name@gmail.com", "senha123"]
-secret = get_random_bytes(32)
-data_to_store = []
-data_to_open = []
-services_revealed = []
 
-print("========= ENCRYPTATION ==========")
+# service = {
+#     "service": "gmail",
+#     "email": "name@gmail.com",
+#     "password": "senha123"
+# }
+# secret = generateSecret()
+# data_to_store = []
+# data_to_open = []
+# services_revealed = []
 
-data_to_store.append(encrypt_service(service, secret))
+# print("========= ENCRYPTATION ==========")
 
-with open("data.json", "w") as json_file:
-    json.dump(data_to_store, json_file, indent=4)
+# data_to_store.append(encrypt_service(service, secret))
 
-print("========= OPENING JSON FILE ==========")
+# with open("data.json", "w") as json_file:
+#     json.dump(data_to_store, json_file, indent=4)
 
-with open("data.json") as json_file:
-    data_to_open = json.load(json_file)
+# print("========= OPENING JSON FILE ==========")
 
-for p in data_to_open:
-    print("service: " + p["service"])
-    print("email: " + p["email"])
-    print("senha: " + p["password"])
-    print("key: " + p["key"])
-    print("nonce: " + p["nonce_key"])
+# with open("data.json") as json_file:
+#     data_to_open = json.load(json_file)
 
-print("========= DECRYPTATION ==========")
+# for p in data_to_open:
+#     print("service: " + p["service"])
+#     print("email: " + p["email"])
+#     print("senha: " + p["password"])
+#     print("key: " + p["key"])
+#     print("nonce: " + p["nonce_key"])
 
-services_revealed.append(decrypt_service(data_to_open[0]))
+# print("========= DECRYPTATION ==========")
 
-print("Services Revealed:")
+# services_revealed.append(decrypt_service(data_to_open[0]))
 
-for item in services_revealed[0]:
-    # print(item)
-    print(f"{item}: {services_revealed[0][item]}")
+# print("Services Revealed:")
+
+# for item in services_revealed[0]:
+#     # print(item)
+#     print(f"{item}: {services_revealed[0][item]}")

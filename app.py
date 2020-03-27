@@ -2,8 +2,14 @@ from __future__ import print_function, unicode_literals
 
 # reGex to validade email input
 import re
+
+# System features
 import os
 import platform
+
+# Project modules
+import cryptodata
+import json
 
 # Modules for Better CLI Display
 from pyfiglet import figlet_format
@@ -52,7 +58,7 @@ class EmptyValidator(Validator):
 
 
 # PyInquirer Select Option List
-def GetCommand():
+def getCommand():
     questions = [
         {
             "type": "list",
@@ -68,7 +74,7 @@ def GetCommand():
 
 
 # PyInquirer Confirm Exit
-def GetUserConfirm():
+def getUserConfirm():
     questions = [
         {
             "type": "confirm",
@@ -106,11 +112,27 @@ def askServiceInformation():
     ]
 
     # prompt returns a Dict with user's answers
-    answers = prompt(questions, style=style)
+    service = prompt(questions, style=style)
 
-    # print the answers
-    for item in answers:
-        print(f"{item}: {answers[item]}")
+    status = saveServiceData(service)
+
+    print(colored(status, "green"))
+    input("Press any key to Continue...")
+
+
+# Encrypt and Save service data
+def saveServiceData(service):
+    # Open data file
+    with open("data.json") as json_file:
+        services_data = json.load(json_file)
+    
+    services_data.append(cryptodata.encrypt_service(service, cryptodata.generateSecret()))
+
+    # ReWrite data file with new service included
+    with open("data.json", "w") as json_file:
+        json.dump(services_data, json_file, indent=4)
+
+    return "Service Registered"
 
 
 # System variables
@@ -123,31 +145,33 @@ exiting = False
 # ===============================================================================
 
 
-# banner = colored(figlet_format("Lowkey", font="slant"), "yellow")
-# print(banner)
-
-# description = colored("A Python Command-Line Interface to manage your passwords", "green")
-# print(description)
-
-
 while not exiting:
 
+    # Clear the terminal
     if platform.system() == "Windows":
         os.system('cls')
     else:
         os.system('clear')
 
+    # Prompt the Lowkey logo and Description
     banner = colored(figlet_format("Lowkey", font="slant"), "yellow")
     print(banner)
 
     description = colored("A Python Command-Line Interface to manage your passwords\n", "green")
     print(description)
 
-
-    command = GetCommand()
+    # Get user command
+    command = getCommand()
 
     # command choices: 'Get a Service', 'Sign a Service', 'Exit'
     if command == "Sign a Service":
         askServiceInformation()
     elif command == "Exit":
-        exiting = GetUserConfirm()
+        exiting = getUserConfirm()
+
+# If user wants exit, let's clear the terminal...
+if exiting:
+    if platform.system() == "Windows":
+        os.system('cls')
+    else:
+        os.system('clear')
