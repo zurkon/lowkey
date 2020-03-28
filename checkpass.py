@@ -19,7 +19,7 @@ def Get_Pass_Leaks_Count(hashes, hash_to_check):
             return count
     return 0
 
-
+# Request the PWNED API
 def Pwned_API_check(password):
     sha1pass = hashlib.sha1(password.encode("utf-8")).hexdigest().upper()
     # Stores the first 5 characters of Hashed Password
