@@ -2,7 +2,7 @@
 
 # Description
 
-Lowkey is a Python Command-Line Interface that stores your Login information for your services such as gmail, Discord and Github. Lowkey encrypts your information to keep it safe. 
+`Lowkey` is a Python Command-Line Interface that stores your Login information for your services such as gmail, Discord and Github. Lowkey encrypts your information to keep it safe. 
 
 The program was developed to work locally without the need to connect to the Internet, including the encryption process, keeping the data more secure on the user's machine.
 
