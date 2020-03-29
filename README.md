@@ -21,9 +21,7 @@ Lowkey have dependencies on the modules:
 So make sure that you have them installed:
 
 ```
-
 pip install pycryptodome PyInquirer pyfiglet pyperclip termcolor
-
 ```
 
 Now you are ready to go :sunglasses: :sparkles:
@@ -33,9 +31,7 @@ Now you are ready to go :sunglasses: :sparkles:
 To run this program just execute the `app.py` file:
 
 ```
-
 python app.py
-
 ```
 
 And that's it. The Lowkey will take care of the rest. :sparkles:
