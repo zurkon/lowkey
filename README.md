@@ -1,4 +1,4 @@
-![lowkey](https://raw.githubusercontent.com/Zurkon/RepoAssets/main/gifs/lowkey.gif)
+![lowkey](https://raw.githubusercontent.com/Zurkon/RepoAssets/main/lowkey/lowkey.gif)
 
 # Description
 
